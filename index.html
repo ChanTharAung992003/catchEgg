@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: pink;
+    }
+    #game{
+      width: 300px;
+      height:65vh;
+      border: 1px solid black;
+      position: relative;
+      overflow: hidden;
+    }
+    #runner {
+      width: 80px;
+      height: 90px;
+      position: absolute;
+      bottom: 20px;
+      z-index: 1111;
+    }
+    #runner img{
+      width: 100%;
+      height: auto;
+    }
+    #block {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      animation: animate 2s linear infinite;
+      z-index: 2;
+      animation-delay: 1s;
+      top:-50px;
+    }
+    #block img{
+      width: 100%;
+      height: auto;
+    }
+    @keyframes animate {
+      0% {
+        top: -100px;
+      }
+      100% {
+        top: 500px;
+      }
+    }
+    #egg {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 0;
+      animation: eggAnimate 2s linear infinite;
+      z-index: 2;
+    }
+    #egg img{
+      width: 100%;
+      height: auto;
+    }
+    @keyframes eggAnimate {
+      0% {
+        top: -100px;
+      }
+      100% {
+        top: 500px;
+      }
+    }
+    span img{
+      width: 350px;
+      height: 50px;
+      position: absolute;
+      bottom: -5px;
+      left: -20px;
+      z-index: 2;
+    }
+    h{
+      width: 100%;
+      height: 100%;
+      position:absolute;
+      z-index: 1;
+      margin-top:190px ;
+    }
+    h img{
+      width: 100%;
+      height: auto;
+    }
+    h2{
+      width: 100%;
+      height: 100%;
+      position:absolute;
+      z-index: 1;
+    }
+    h2 img{
+      width: 100%;
+      height: auto;
+    }
+    #score,#scoreText{
+      position:absolute;
+      z-index: 50000;
+      font-size: 15px;
+      font-weight: 500;
+      width: 70px;
+      background-color: ;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+    }
+    #score{
+      left: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="scoreText">Score|</div>
+    <div id="score">0</div>
+    <div id="block">
+      <img src="bomb.png" alt="bomb">
+    </div>
+    <div id="egg">
+      <img src="egg.png" alt="egg">
+    </div>
+    <div id="runner">
+       <img src="farmer.png" alt="farmer">
+    </div>
+    <span><img src="grass.png" alt="grass"></span>
+    <h><img src="background.jpg"></h>
+    <h2><img src="Topback.jpg"></h2>
+  </div>
+</body>
+<script>
+    let runner = document.getElementById('runner');
+    let block = document.getElementById('block');
+    let egg = document.getElementById('egg');
+    let score = document.getElementById('score');
+    let counter=0;
+
+    window.addEventListener('deviceorientation', function(event) {
+      if (event.gamma < 24 && event.gamma > -1) {
+        let valueX = event.gamma;
+        runner.style.left = (valueX * 10) + 'px'; 
+      }
+    });
+
+    block.addEventListener('animationiteration', () => {
+      var random = Math.floor(Math.random() * 4);
+      left = random * 100;
+      block.style.left = left + "px";
+    });
+
+    egg.addEventListener('animationiteration', () => {
+      var random = Math.floor(Math.random() * 3);
+      left = random * 100;
+      egg.style.left = left + "px";
+      counter++;
+      score.innerText=counter;
+    });
+
+    setInterval(function() {
+      var runnerRect = runner.getBoundingClientRect();
+      var blockRect = block.getBoundingClientRect();
+      var eggRect = egg.getBoundingClientRect();
+      
+      if (
+        runnerRect.right >= blockRect.left &&
+        runnerRect.left <= blockRect.right &&
+        runnerRect.bottom >= blockRect.top &&
+        runnerRect.top <= blockRect.bottom
+      ) {
+        alert("Game over|Score:"+counter);
+        block.style.animation = "none";
+        
+      }
+      
+      if (
+        runnerRect.right >= eggRect.left &&
+        runnerRect.left <= eggRect.right &&
+        runnerRect.bottom >= eggRect.top &&
+        runnerRect.top <= eggRect.bottom
+      ) {
+        
+      }
+    }, 1);
+  </script>
+</html>
+
+
+
+
+
